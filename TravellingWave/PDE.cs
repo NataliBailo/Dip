@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace FHN_nonlocal_coupling
+namespace TravellingWave
 {
     class PDE : AbstractFHN
     {

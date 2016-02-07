@@ -1,4 +1,4 @@
-﻿namespace FHN_nonlocal_coupling
+﻿namespace TravellingWave
 {
     partial class WindowODE
     {
