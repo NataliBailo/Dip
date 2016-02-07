@@ -42,10 +42,7 @@ namespace TravellingWave
         private void plot(int j, PDE obj, int numEq)
         {   // plots full given t segment of diffusion solution
             for (int i = 0; i < obj.N + 1; i++)
-            {
-                chart.Series[2 * numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
-                chart.Series[2 * numEq + 1].Points.AddXY(obj.getX(i), obj.getV(j, i));
-            }
+                chart.Series[numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
         }
 
         private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -186,9 +183,6 @@ namespace TravellingWave
 
             chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisX.Maximum + chart.ChartAreas[0].AxisX.Minimum) / 6.0);
             chart.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisY.Maximum + chart.ChartAreas[0].AxisY.Minimum) / 6.0);
-
-            chart.Series[2].Color = Color.Blue;
-            chart.Series[3].Color = Color.OrangeRed;
         }
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)

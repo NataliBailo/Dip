@@ -12,7 +12,7 @@ namespace TravellingWave
         // variables and arrays
         private double[] x, t;
         private double hx, ht; // steps
-        private double[,] u, v;
+        private double[,] u;
         
         // properties
         public int N
@@ -62,27 +62,6 @@ namespace TravellingWave
             set;
         }
 
-        [Description("v's equation constant")]
-        public double Eps
-        {   // v's equation constants
-            get;
-            set;
-        }
-
-        [Description("v's equation constant")]
-        public double Alpha
-        {   // v's equation constants
-            get;
-            set;
-        }
-
-        [Description("v's equation constant")]
-        public double Beta
-        {   // v's equation constants
-            get;
-            set;
-        }
-
         [Description("F's constant in non-classical non-linearity (classical == false)")]
         public double A
         {   // f's constant if non-classical
@@ -114,10 +93,6 @@ namespace TravellingWave
             B = 0.0;
             D = 1.0;
             I = 0.0;
-
-            Eps = 0.08;
-            Beta = 0.064;
-            Alpha = 0.056;
             A = 0.1;
 
             Classical = true;
@@ -139,17 +114,13 @@ namespace TravellingWave
             for (int j = 0; j < M + 1; j++) t[j] = j * ht;
 
             u = new double[M + 1, N + 1];
-            v = new double[M + 1, N + 1];
         }
 
         public void initials()
         {   // Initialize initials
 
-            for (int i = 0; i < N + 1; i++)
-            {	// setting an initial waves at t = 0
+            for (int i = 0; i < N + 1; i++) // setting an initial waves at t = 0
                 u[0, i] = u_x_0(x[i]);
-                v[0, i] = v_x_0(x[i]);
-            }
         }
 
         public int solve()
@@ -205,18 +176,6 @@ namespace TravellingWave
             u[j + 1, N] = Q[N];
             for (int i = N - 1; i > -1; i--) u[j + 1, i] = P[i] * u[j + 1, i + 1] + Q[i];
 
-            double nextV;
-            for (int i = 0; i < N + 1; i++)
-            {
-                nextV = (v[j, i] + ht * (Eps * u[j + 1, i] + Alpha)) / (1 + Beta * ht);
-
-                // catching V is NaN
-                if (Double.IsNaN(nextV))
-                    return -1;
-                else
-                    v[j + 1, i] = nextV;
-            }
-
             return 0;
         }
 
@@ -229,25 +188,25 @@ namespace TravellingWave
                     if (i - k <= 1) // if x - d <= -l
                     {
                         if (i + k <= N - 1) // if x - d <= -l and x + d <= l
-                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) + I);
                         else if (i + k > N - 1) // if x - d <= -l and x + d > l
-                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                            di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) + I);
                     }
                     else if (i - k > 1) // if x - d > -l
                     {
                         if (i + k <= N - 1) // if x - d > -l and x + d <= l
-                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) + I);
                         else if (i + k > N - 1)  // if x - d > -l and x + d > l
-                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                            di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) + I);
                     }
                 }
                 else
-                    di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
+                    di[i] = u[j, i] + ht * (f(u[j, i]) + I);
             }
             else if (B != 0)
-                di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) - v[j, i] + I);
+                di[i] = u[j, i] + ht * (B * (integral(j, i) - u[j, i]) + f(u[j, i]) + I);
             else
-                di[i] = u[j, i] + ht * (f(u[j, i]) - v[j, i] + I);
+                di[i] = u[j, i] + ht * (f(u[j, i]) + I);
         }
 
         public double getX(int i)
@@ -263,11 +222,6 @@ namespace TravellingWave
         public double getU(int j, int i)
         { 
             return u[j, i]; 
-        }
-        
-        public double getV(int j, int i)
-        { 
-            return v[j, i]; 
         }
 
         // various functions
@@ -309,11 +263,6 @@ namespace TravellingWave
             
             //return 1.0 / 2 * Math.Exp(-Math.Abs(x + 2));
         }
-
-        private double v_x_0(double x)
-        {   // initial v wave at t = 0
-            return -0.624; 
-        } 
 
         private double u_0_t(double t) { return 0.0; } // Neumann boundary condition at x = -l
 
