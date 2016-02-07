@@ -14,7 +14,7 @@ namespace TravellingWave
         private double hx, ht; // steps
         private double[,] u;
         
-        // properties
+        // свойства (properties)
         public int N
         {   // quantity of u,v t's
             get;
@@ -251,17 +251,8 @@ namespace TravellingWave
         }            
 
         private double u_x_0(double x)
-        {	// initial u wave at t = 0
-            double u0 = -1.199;
-            if (x < -40) return 1.0;
-            else if ((x >= -40) && (x <= -30))
-                return (u0 - 1) * (x + 30) / 10 + u0;
-            else
-                return u0;
-            
-            //return Math.Exp(-x * x / 2) / (2 * Math.PI);
-            
-            //return 1.0 / 2 * Math.Exp(-Math.Abs(x + 2));
+        {	// начальное условие при t = 0
+            return (1.0 / 2) * (1 + Math.Tanh(x / (2 * Math.Sqrt(2))));
         }
 
         private double u_0_t(double t) { return 0.0; } // Neumann boundary condition at x = -l
