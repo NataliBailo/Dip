@@ -9,20 +9,20 @@ namespace TravellingWave
 {
     class PDE
     {
-        // variables and arrays
+        // переменные и массивы
         private double[] x, t;
-        private double hx, ht; // steps
+        private double hx, ht; // шаги по x и по t
         private double[,] u;
         
         // свойства (properties)
         public int N
-        {   // quantity of u,v t's
+        {   // количество точек по x
             get;
             set;
         }
 
         public int M
-        {   // quantity of u,v t's
+        {   // количество точек по t
             get;
             set;
         }
