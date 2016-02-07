@@ -125,7 +125,7 @@ namespace TravellingWave
         }
 
         // methods
-        public override void load()
+        public void load()
         {   // initialize/declare arrays and steps
             // If we want to change one of the parameters: n, m, l, TB,
             // then it needs to call this (plus Intiials) functions again.
@@ -142,7 +142,7 @@ namespace TravellingWave
             v = new double[M + 1, N + 1];
         }
 
-        public override void initials()
+        public void initials()
         {   // Initialize initials
 
             for (int i = 0; i < N + 1; i++)
@@ -152,7 +152,7 @@ namespace TravellingWave
             }
         }
 
-        public override int solve()
+        public int solve()
         {
             // If we changed ONLY eps, beta, gamma, b, d, Kernel, f or Iext,
             // then just recall this function.
