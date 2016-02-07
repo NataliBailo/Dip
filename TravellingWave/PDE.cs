@@ -7,13 +7,20 @@ using System.ComponentModel;
 
 namespace TravellingWave
 {
-    class PDE : AbstractFHN
+    class PDE
     {
         // variables and arrays
-        private double[] x;
+        private double[] x, t;
+        private double hx, ht; // steps
         private double[,] u, v;
         
         // properties
+        public int N
+        {   // quantity of u,v t's
+            get;
+            set;
+        }
+
         public int M
         {   // quantity of u,v t's
             get;
@@ -21,8 +28,15 @@ namespace TravellingWave
         }
 
         [Description("Interval for x [-L, L]")]
-        public override double L
+        public double L
         {   // bound x's segment
+            get;
+            set;
+        }
+
+        [Description("Interval for t [0, T]")]
+        public double T
+        {   // bound t's segment
             get;
             set;
         }
@@ -41,6 +55,48 @@ namespace TravellingWave
             set;
         }
 
+        [Description("Current I excitatory")]
+        public double I
+        {   // current
+            get;
+            set;
+        }
+
+        [Description("v's equation constant")]
+        public double Eps
+        {   // v's equation constants
+            get;
+            set;
+        }
+
+        [Description("v's equation constant")]
+        public double Alpha
+        {   // v's equation constants
+            get;
+            set;
+        }
+
+        [Description("v's equation constant")]
+        public double Beta
+        {   // v's equation constants
+            get;
+            set;
+        }
+
+        [Description("F's constant in non-classical non-linearity (classical == false)")]
+        public double A
+        {   // f's constant if non-classical
+            get;
+            set;
+        }
+
+        [Description("Whether this is a classical f(u) or not")]
+        public bool Classical
+        {   // Is the equation with classical non-linearity?
+            get;
+            set;
+        }
+
         [Description("Delta-Kernel or not?")]
         public bool DeltaCoupling
         {   // bool for deciding which equation solves
@@ -49,7 +105,7 @@ namespace TravellingWave
         }
 
         // Constructor with default values
-        public PDE() : base()
+        public PDE()
         {
             N = 2000;
             M = 2000;
@@ -58,6 +114,13 @@ namespace TravellingWave
             B = 0.0;
             D = 1.0;
             I = 0.0;
+
+            Eps = 0.08;
+            Beta = 0.064;
+            Alpha = 0.056;
+            A = 0.1;
+
+            Classical = true;
             DeltaCoupling = true;
         }
 
@@ -191,6 +254,11 @@ namespace TravellingWave
         { 
             return x[i]; 
         }
+
+        public double getT(int j)
+        {
+            return t[j];
+        }
         
         public double getU(int j, int i)
         { 
@@ -203,6 +271,14 @@ namespace TravellingWave
         }
 
         // various functions
+		private double f(double u)
+        {
+            if (Classical)
+                return u - u * u * u / 3;
+            else
+                return -u * (u - 1) * (u - A);
+        }
+
         private double integral(int j, int i)
         {   // Trapezoidal rule, uniform grid
             // integrating at point (t[j], x[i]) from -l to l
