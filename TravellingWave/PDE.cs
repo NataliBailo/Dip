@@ -27,63 +27,63 @@ namespace TravellingWave
             set;
         }
 
-        [Description("Interval for x [-L, L]")]
+        [Description("Интервал по x [-L, L]")]
         public double L
-        {   // bound x's segment
+        {
             get;
             set;
         }
 
-        [Description("Interval for t [0, T]")]
+        [Description("Интервал по t [0, T]")]
         public double T
-        {   // bound t's segment
+        {
             get;
             set;
         }
 
-        [Description("constant in front of Kernel")]
+        [Description("Константа перед ядром")]
         public double B
-        {   // constant before coupling
+        {   // константа перед ядром
             get;
             set;
         }
 
-        [Description("Delay in Delta-Kernel")]
+        [Description("Задержка в Delta-Ядре")]
         public double D
-        {   // a delay in delta Kernel
+        {
             get;
             set;
         }
 
-        [Description("Current I excitatory")]
+        [Description("Ток I-excitatory")]
         public double I
-        {   // current
+        {   // ток
             get;
             set;
         }
 
-        [Description("F's constant in non-classical non-linearity (classical == false)")]
+        [Description("Константа 'a' в функции f(u) при Classical == false")]
         public double A
-        {   // f's constant if non-classical
+        {
             get;
             set;
         }
 
-        [Description("Whether this is a classical f(u) or not")]
+        [Description("Уравнение с классической функцией f(u)?")]
         public bool Classical
-        {   // Is the equation with classical non-linearity?
+        {   // Уравнение с классической функцией f?
             get;
             set;
         }
 
-        [Description("Delta-Kernel or not?")]
+        [Description("Delta-ядро?")]
         public bool DeltaCoupling
-        {   // bool for deciding which equation solves
+        {   // если да, то решается с дельта ядром
             get;
             set;
         }
 
-        // Constructor with default values
+        // Конструктор
         public PDE()
         {
             N = 2000;
@@ -99,35 +99,30 @@ namespace TravellingWave
             DeltaCoupling = true;
         }
 
-        // methods
+        // методы
         public void load()
-        {   // initialize/declare arrays and steps
-            // If we want to change one of the parameters: n, m, l, TB,
-            // then it needs to call this (plus Intiials) functions again.
-            hx = 2 * L / N; // step for x
-            ht = T / M;  // step for t
+        {   // инициализируем/декларируем массивы и некоторые переменные
+            hx = 2 * L / N; // шаг по x
+            ht = T / M;  // шаг по t
 
-            x = new double[N + 1]; // arrange x's
+            x = new double[N + 1];
             for (int i = 0; i < N + 1; i++) x[i] = - L + i * hx;
 
-            t = new double[M + 1]; // arrange t's
+            t = new double[M + 1];
             for (int j = 0; j < M + 1; j++) t[j] = j * ht;
 
             u = new double[M + 1, N + 1];
         }
 
         public void initials()
-        {   // Initialize initials
+        {   // Применяем начальные условия к функции u(x,t)
 
-            for (int i = 0; i < N + 1; i++) // setting an initial waves at t = 0
+            for (int i = 0; i < N + 1; i++) // начальное значение при t = 0
                 u[0, i] = u_x_0(x[i]);
         }
 
         public int solve()
-        {
-            // If we changed ONLY eps, beta, gamma, b, d, Kernel, f or Iext,
-            // then just recall this function.
-            
+        {   
             double step = ht / (hx * hx);
 
             double[] P = new double[N + 1];
@@ -137,7 +132,7 @@ namespace TravellingWave
             double[] bi = new double[3] { -1, -1 - 2 * step, 1 };
             double[] ci = new double[3] { -1, -step, 0 };
             double[] di = new double[N + 1];
-            di[0] = 0; di[N] = 0; // if Neumann condition changes (smth except du/dn = zero), it needs to be commented
+            di[0] = 0; di[N] = 0; // если меняем условие Неймана (что-то вместо du/dn = 0), то эту строчку нужно закомментировать
 
             P[0] = ci[0] / bi[0];
             for (int i = 1; i < N; i++) P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
@@ -146,7 +141,7 @@ namespace TravellingWave
             for (int j = 0; j < M; j++)
             {
                 int extCode = progonkaJLayer(Q, P, ai, bi, di, j);
-                if (extCode != 0)
+                if (extCode != 0) // если не получилось сделать прогонку, то прекращаем решать уравнение и показываем ошибку
                     return -1;
             }
 
@@ -158,7 +153,7 @@ namespace TravellingWave
             int k = Convert.ToInt32(D / hx);
             D = hx * k;
 
-            //di[0] = ht * u_0_t(t[j]); // if Neumann condition is not a zero
+            //di[0] = ht * u_0_t(t[j]); // если условие Неймана ненулевое
             Q[0] = -di[0] / bi[0];
             for (int i = 1; i < N; i++)
             {
@@ -166,11 +161,11 @@ namespace TravellingWave
 
                 Q[i] = (ai[1] * Q[i - 1] - di[i]) / (bi[1] - ai[1] * P[i - 1]);
 
-                // catching Q is NaN
+                // ловим, чтобы Q не равнялось бесконечности
                 if (Double.IsNaN(Q[i]))
                     return -1;
             }
-            //di[n] = ht * u_l_t(t[j]); // if Neumann condition is not a zero
+            //di[n] = ht * u_l_t(t[j]); // если условие Неймана ненулевое
             Q[N] = (ai[2] * Q[N - 1] - di[N]) / (bi[2] - ai[2] * P[N - 1]);
 
             u[j + 1, N] = Q[N];
@@ -185,18 +180,18 @@ namespace TravellingWave
             {
                 if (B != 0)
                 {
-                    if (i - k <= 1) // if x - d <= -l
+                    if (i - k <= 1) // если x - d <= -l
                     {
-                        if (i + k <= N - 1) // if x - d <= -l and x + d <= l
+                        if (i + k <= N - 1) // если x - d <= -l И x + d <= l
                             di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) + I);
-                        else if (i + k > N - 1) // if x - d <= -l and x + d > l
+                        else if (i + k > N - 1) // если x - d <= -l И x + d > l
                             di[i] = u[j, i] + ht * (B * (u[j, 1] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) + I);
                     }
-                    else if (i - k > 1) // if x - d > -l
+                    else if (i - k > 1) // если x - d > -l
                     {
-                        if (i + k <= N - 1) // if x - d > -l and x + d <= l
+                        if (i + k <= N - 1) // если x - d > -l И x + d <= l
                             di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, i + k] - 2 * u[j, i]) + f(u[j, i]) + I);
-                        else if (i + k > N - 1)  // if x - d > -l and x + d > l
+                        else if (i + k > N - 1)  // если x - d > -l И x + d > l
                             di[i] = u[j, i] + ht * (B * (u[j, i - k] + u[j, N - 1] - 2 * u[j, i]) + f(u[j, i]) + I);
                     }
                 }
@@ -224,7 +219,7 @@ namespace TravellingWave
             return u[j, i]; 
         }
 
-        // various functions
+        // разные функции
 		private double f(double u)
         {
             if (Classical)
@@ -234,8 +229,8 @@ namespace TravellingWave
         }
 
         private double integral(int j, int i)
-        {   // Trapezoidal rule, uniform grid
-            // integrating at point (t[j], x[i]) from -l to l
+        {   // Формула трапеции (для ядра K)
+            // интегрируем в точке (t[j], x[i]) от -l до l
             double sum = 0;
             sum += kernel(x[i] - x[0]) * u[j, 0];
             for (int k = 1; k < N; k++) sum += 2 * kernel(x[i] - x[k]) * u[j, k];
@@ -255,8 +250,8 @@ namespace TravellingWave
             return (1.0 / 2) * (1 + Math.Tanh(x / (2 * Math.Sqrt(2))));
         }
 
-        private double u_0_t(double t) { return 0.0; } // Neumann boundary condition at x = -l
+        private double u_0_t(double t) { return 0.0; } // Условие Неймана на границе x = -l
 
-        private double u_l_t(double t) { return 0.0; } // Neumann boundary condition at x = l
+        private double u_l_t(double t) { return 0.0; } // Условие Неймана на границе x = l
     }
 }
