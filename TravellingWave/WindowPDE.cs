@@ -40,7 +40,7 @@ namespace TravellingWave
         }
 
         private void plot(int j, PDE obj, int numEq)
-        {   // plots full given t segment of diffusion solution
+        {   // рисует весь слой по x при фиксированном t
             for (int i = 0; i < obj.N + 1; i++)
                 chart.Series[numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
         }
@@ -56,10 +56,9 @@ namespace TravellingWave
         }
 
         private void btnSolveBeh()
-        {
-            // Solve button behaviour
-            // if we change alpha, beta, gamma, Kernel or f,
-            // then disable Plot and call Solve again.
+        {   // вызвать, если меняем любой из параметров уравнения
+
+            // выключаем кнопку "Нарисовать"
             if (btnPlot.Enabled)
             {
                 btnPlot.Enabled = false;
@@ -68,6 +67,8 @@ namespace TravellingWave
 
             lblError.Visible = false;
 
+            // сбрасываем значение трекбара
+            // и выключаем таймер
             trBarT.Value = 0;
             trBarT.Enabled = false;
             timerT.Enabled = false;
@@ -75,7 +76,8 @@ namespace TravellingWave
 
         private void btnPlotBeh()
         {
-            // Plot button behaviour
+            // если не появилось ошибки,
+            // то включаем кнопку "Нарисовать" и трекбар
             if (!lblError.Visible)
             {
                 btnSolve.Enabled = false;
@@ -130,7 +132,8 @@ namespace TravellingWave
             clearPlot();
 
             if (trBarT.Value == pdes[0].M)
-            {   // if it is the last t segment, plot it and reset trBar.Value
+            {   // если это последний сегмент по t, 
+                // то рисуем его и сбрасываем значение трекбара на 0
                 for (int i = 0; i < pdes.Length; i++)
                     plot(trBarT.Value, pdes[i], i);
 
