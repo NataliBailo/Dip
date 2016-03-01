@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -8,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FHN_nonlocal_coupling
+namespace TravellingWave
 {
     public partial class WindowPDE : Form
     {
@@ -40,12 +39,9 @@ namespace FHN_nonlocal_coupling
         }
 
         private void plot(int j, PDE obj, int numEq)
-        {   // plots full given t segment of diffusion solution
+        {   // рисует весь слой по x при фиксированном t
             for (int i = 0; i < obj.N + 1; i++)
-            {
-                chart.Series[2 * numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
-                chart.Series[2 * numEq + 1].Points.AddXY(obj.getX(i), obj.getV(j, i));
-            }
+                chart.Series[numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
         }
 
         private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
@@ -59,10 +55,9 @@ namespace FHN_nonlocal_coupling
         }
 
         private void btnSolveBeh()
-        {
-            // Solve button behaviour
-            // if we change alpha, beta, gamma, Kernel or f,
-            // then disable Plot and call Solve again.
+        {   // вызвать, если меняем любой из параметров уравнения
+
+            // выключаем кнопку "Нарисовать"
             if (btnPlot.Enabled)
             {
                 btnPlot.Enabled = false;
@@ -71,6 +66,8 @@ namespace FHN_nonlocal_coupling
 
             lblError.Visible = false;
 
+            // сбрасываем значение трекбара
+            // и выключаем таймер
             trBarT.Value = 0;
             trBarT.Enabled = false;
             timerT.Enabled = false;
@@ -78,7 +75,8 @@ namespace FHN_nonlocal_coupling
 
         private void btnPlotBeh()
         {
-            // Plot button behaviour
+            // если не появилось ошибки,
+            // то включаем кнопку "Нарисовать" и трекбар
             if (!lblError.Visible)
             {
                 btnSolve.Enabled = false;
@@ -133,7 +131,8 @@ namespace FHN_nonlocal_coupling
             clearPlot();
 
             if (trBarT.Value == pdes[0].M)
-            {   // if it is the last t segment, plot it and reset trBar.Value
+            {   // если это последний сегмент по t, 
+                // то рисуем его и сбрасываем значение трекбара на 0
                 for (int i = 0; i < pdes.Length; i++)
                     plot(trBarT.Value, pdes[i], i);
 
@@ -186,9 +185,6 @@ namespace FHN_nonlocal_coupling
 
             chart.ChartAreas[0].AxisX.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisX.Maximum + chart.ChartAreas[0].AxisX.Minimum) / 6.0);
             chart.ChartAreas[0].AxisY.Interval = Convert.ToInt32((chart.ChartAreas[0].AxisY.Maximum + chart.ChartAreas[0].AxisY.Minimum) / 6.0);
-
-            chart.Series[2].Color = Color.Blue;
-            chart.Series[3].Color = Color.OrangeRed;
         }
 
         private void checkBox2ndEq_CheckedChanged(object sender, EventArgs e)
@@ -203,21 +199,6 @@ namespace FHN_nonlocal_coupling
         {
             AboutPDE o = new AboutPDE();
             o.Show();
-        }
-
-        private void btnTickSlower_Click(object sender, EventArgs e)
-        {
-            timerT.Interval += pdes[0].M / 5;
-        }
-
-        private void btnTickFaster_Click(object sender, EventArgs e)
-        {
-            if (timerT.Interval - pdes[0].M / 5 > 0)
-                timerT.Interval -= pdes[0].M / 5;
-            else
-            {
-                timerT.Interval = 1;
-            }
         }
     }
 }

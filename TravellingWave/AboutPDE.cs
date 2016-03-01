@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FHN_nonlocal_coupling
+namespace TravellingWave
 {
-    public partial class AboutODE : Form
+    public partial class AboutPDE : Form
     {
-        public AboutODE()
+        public AboutPDE()
         {
             InitializeComponent();
         }

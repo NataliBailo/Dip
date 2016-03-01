@@ -1,4 +1,4 @@
-﻿namespace FHN_nonlocal_coupling
+﻿namespace TravellingWave
 {
     partial class WindowPDE
     {
@@ -29,12 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series17 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series18 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series19 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series20 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.lblError = new System.Windows.Forms.Label();
             this.checkBox2ndEq = new System.Windows.Forms.CheckBox();
             this.lblMinUV = new System.Windows.Forms.Label();
@@ -56,8 +54,6 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.propertyGrid2 = new System.Windows.Forms.PropertyGrid();
-            this.btnTickSlower = new System.Windows.Forms.Button();
-            this.btnTickFaster = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trBarT)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -70,11 +66,11 @@
             this.lblError.AutoSize = true;
             this.lblError.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblError.ForeColor = System.Drawing.Color.DarkRed;
-            this.lblError.Location = new System.Drawing.Point(189, 665);
+            this.lblError.Location = new System.Drawing.Point(21, 686);
             this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(102, 16);
+            this.lblError.Size = new System.Drawing.Size(158, 16);
             this.lblError.TabIndex = 80;
-            this.lblError.Text = "Error occured";
+            this.lblError.Text = "Ошибка вычислений";
             this.lblError.Visible = false;
             // 
             // checkBox2ndEq
@@ -82,9 +78,9 @@
             this.checkBox2ndEq.AutoSize = true;
             this.checkBox2ndEq.Location = new System.Drawing.Point(16, 442);
             this.checkBox2ndEq.Name = "checkBox2ndEq";
-            this.checkBox2ndEq.Size = new System.Drawing.Size(59, 17);
+            this.checkBox2ndEq.Size = new System.Drawing.Size(141, 17);
             this.checkBox2ndEq.TabIndex = 82;
-            this.checkBox2ndEq.Text = "2nd eq";
+            this.checkBox2ndEq.Text = "Решать два уравнения";
             this.checkBox2ndEq.UseVisualStyleBackColor = true;
             this.checkBox2ndEq.CheckedChanged += new System.EventHandler(this.checkBox2ndEq_CheckedChanged);
             // 
@@ -136,64 +132,49 @@
             // 
             // chart
             // 
-            chartArea5.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea5);
-            legend5.Name = "Legend1";
-            this.chart.Legends.Add(legend5);
+            chartArea1.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart.Legends.Add(legend1);
             this.chart.Location = new System.Drawing.Point(242, 8);
             this.chart.Name = "chart";
-            series17.BorderWidth = 3;
-            series17.ChartArea = "ChartArea1";
-            series17.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series17.Legend = "Legend1";
-            series17.MarkerSize = 7;
-            series17.Name = "U";
-            series17.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series17.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series18.BorderWidth = 3;
-            series18.ChartArea = "ChartArea1";
-            series18.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series18.Legend = "Legend1";
-            series18.MarkerSize = 7;
-            series18.Name = "V";
-            series18.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series18.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series19.BorderWidth = 2;
-            series19.ChartArea = "ChartArea1";
-            series19.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series19.Legend = "Legend1";
-            series19.Name = "U2";
-            series20.BorderWidth = 2;
-            series20.ChartArea = "ChartArea1";
-            series20.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series20.Legend = "Legend1";
-            series20.Name = "V2";
-            this.chart.Series.Add(series17);
-            this.chart.Series.Add(series18);
-            this.chart.Series.Add(series19);
-            this.chart.Series.Add(series20);
+            series1.BorderWidth = 3;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.MarkerSize = 7;
+            series1.Name = "U";
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series2.BorderWidth = 2;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "U2";
+            this.chart.Series.Add(series1);
+            this.chart.Series.Add(series2);
             this.chart.Size = new System.Drawing.Size(1031, 650);
             this.chart.TabIndex = 44;
             this.chart.Text = "chart1";
             // 
             // btnSolve
             // 
-            this.btnSolve.Location = new System.Drawing.Point(27, 579);
+            this.btnSolve.Location = new System.Drawing.Point(16, 579);
             this.btnSolve.Name = "btnSolve";
-            this.btnSolve.Size = new System.Drawing.Size(75, 23);
+            this.btnSolve.Size = new System.Drawing.Size(86, 23);
             this.btnSolve.TabIndex = 45;
-            this.btnSolve.Text = "Solve";
+            this.btnSolve.Text = "Решить";
             this.btnSolve.UseVisualStyleBackColor = true;
             this.btnSolve.Click += new System.EventHandler(this.btnSolve_Click);
             // 
             // btnPlot
             // 
             this.btnPlot.Enabled = false;
-            this.btnPlot.Location = new System.Drawing.Point(27, 608);
+            this.btnPlot.Location = new System.Drawing.Point(16, 608);
             this.btnPlot.Name = "btnPlot";
-            this.btnPlot.Size = new System.Drawing.Size(75, 23);
+            this.btnPlot.Size = new System.Drawing.Size(86, 23);
             this.btnPlot.TabIndex = 46;
-            this.btnPlot.Text = "Plot";
+            this.btnPlot.Text = "Нарисовать";
             this.btnPlot.UseVisualStyleBackColor = true;
             this.btnPlot.Click += new System.EventHandler(this.btnPlot_Click);
             // 
@@ -208,10 +189,10 @@
             // 
             // prBarSolve
             // 
-            this.prBarSolve.Location = new System.Drawing.Point(27, 661);
+            this.prBarSolve.Location = new System.Drawing.Point(16, 661);
             this.prBarSolve.Maximum = 4;
             this.prBarSolve.Name = "prBarSolve";
-            this.prBarSolve.Size = new System.Drawing.Size(156, 23);
+            this.prBarSolve.Size = new System.Drawing.Size(167, 23);
             this.prBarSolve.Step = 1;
             this.prBarSolve.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.prBarSolve.TabIndex = 48;
@@ -221,9 +202,9 @@
             this.rdBtnTmr.AutoSize = true;
             this.rdBtnTmr.Location = new System.Drawing.Point(111, 609);
             this.rdBtnTmr.Name = "rdBtnTmr";
-            this.rdBtnTmr.Size = new System.Drawing.Size(76, 17);
+            this.rdBtnTmr.Size = new System.Drawing.Size(86, 17);
             this.rdBtnTmr.TabIndex = 49;
-            this.rdBtnTmr.Text = "With Timer";
+            this.rdBtnTmr.Text = "С таймером";
             this.rdBtnTmr.UseVisualStyleBackColor = true;
             // 
             // btnStopTimer
@@ -246,7 +227,7 @@
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.Size = new System.Drawing.Size(75, 23);
             this.btnAbout.TabIndex = 84;
-            this.btnAbout.Text = "About";
+            this.btnAbout.Text = "Об ур-нии";
             this.btnAbout.UseVisualStyleBackColor = true;
             this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
             // 
@@ -277,7 +258,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(163, 369);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "First eq";
+            this.tabPage1.Text = "1-ое ур-ние";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
@@ -288,7 +269,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(163, 369);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Second eq";
+            this.tabPage2.Text = "2-ое ур-ние";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // propertyGrid2
@@ -300,33 +281,11 @@
             this.propertyGrid2.TabIndex = 86;
             this.propertyGrid2.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGrid2_SelectedGridItemChanged);
             // 
-            // btnTickSlower
-            // 
-            this.btnTickSlower.Location = new System.Drawing.Point(111, 580);
-            this.btnTickSlower.Name = "btnTickSlower";
-            this.btnTickSlower.Size = new System.Drawing.Size(26, 23);
-            this.btnTickSlower.TabIndex = 87;
-            this.btnTickSlower.Text = "-";
-            this.btnTickSlower.UseVisualStyleBackColor = true;
-            this.btnTickSlower.Click += new System.EventHandler(this.btnTickSlower_Click);
-            // 
-            // btnTickFaster
-            // 
-            this.btnTickFaster.Location = new System.Drawing.Point(153, 580);
-            this.btnTickFaster.Name = "btnTickFaster";
-            this.btnTickFaster.Size = new System.Drawing.Size(26, 23);
-            this.btnTickFaster.TabIndex = 88;
-            this.btnTickFaster.Text = "+";
-            this.btnTickFaster.UseVisualStyleBackColor = true;
-            this.btnTickFaster.Click += new System.EventHandler(this.btnTickFaster_Click);
-            // 
             // WindowPDE
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 711);
-            this.Controls.Add(this.btnTickFaster);
-            this.Controls.Add(this.btnTickSlower);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnAbout);
             this.Controls.Add(this.lblError);
@@ -380,7 +339,5 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.PropertyGrid propertyGrid2;
-        private System.Windows.Forms.Button btnTickSlower;
-        private System.Windows.Forms.Button btnTickFaster;
     }
 }
