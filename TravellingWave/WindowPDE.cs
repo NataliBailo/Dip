@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -200,21 +199,6 @@ namespace TravellingWave
         {
             AboutPDE o = new AboutPDE();
             o.Show();
-        }
-
-        private void btnTickSlower_Click(object sender, EventArgs e)
-        {
-            timerT.Interval += pdes[0].M / 5;
-        }
-
-        private void btnTickFaster_Click(object sender, EventArgs e)
-        {
-            if (timerT.Interval - pdes[0].M / 5 > 0)
-                timerT.Interval -= pdes[0].M / 5;
-            else
-            {
-                timerT.Interval = 1;
-            }
         }
     }
 }
