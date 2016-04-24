@@ -231,7 +231,7 @@ namespace TravellingWave
             if (Classical)
                 return u - u * u * u / 3;
             else
-                return -u * (u - 1) * (u - a);
+                return -(u + 1) * (u - 1) * (u - a);
         }
 
         private double integral(int j, int i)
