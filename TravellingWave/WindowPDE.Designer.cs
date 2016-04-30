@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series11 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series12 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.lblError = new System.Windows.Forms.Label();
             this.checkBox2ndEq = new System.Windows.Forms.CheckBox();
             this.lblMinUV = new System.Windows.Forms.Label();
@@ -118,7 +118,7 @@
             this.txtBoxMinUV.Name = "txtBoxMinUV";
             this.txtBoxMinUV.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMinUV.TabIndex = 57;
-            this.txtBoxMinUV.Text = "-2,1";
+            this.txtBoxMinUV.Text = "-1,5";
             this.txtBoxMinUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtBoxMaxUV
@@ -127,32 +127,32 @@
             this.txtBoxMaxUV.Name = "txtBoxMaxUV";
             this.txtBoxMaxUV.Size = new System.Drawing.Size(34, 20);
             this.txtBoxMaxUV.TabIndex = 58;
-            this.txtBoxMaxUV.Text = "2,0";
+            this.txtBoxMaxUV.Text = "1,5";
             this.txtBoxMaxUV.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // chart
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart.Legends.Add(legend1);
+            chartArea6.Name = "ChartArea1";
+            this.chart.ChartAreas.Add(chartArea6);
+            legend6.Name = "Legend1";
+            this.chart.Legends.Add(legend6);
             this.chart.Location = new System.Drawing.Point(242, 8);
             this.chart.Name = "chart";
-            series1.BorderWidth = 3;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.MarkerSize = 7;
-            series1.Name = "U";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
-            series2.BorderWidth = 2;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series2.Legend = "Legend1";
-            series2.Name = "U2";
-            this.chart.Series.Add(series1);
-            this.chart.Series.Add(series2);
+            series11.BorderWidth = 3;
+            series11.ChartArea = "ChartArea1";
+            series11.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series11.Legend = "Legend1";
+            series11.MarkerSize = 7;
+            series11.Name = "U";
+            series11.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series11.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Double;
+            series12.BorderWidth = 2;
+            series12.ChartArea = "ChartArea1";
+            series12.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series12.Legend = "Legend1";
+            series12.Name = "U2";
+            this.chart.Series.Add(series11);
+            this.chart.Series.Add(series12);
             this.chart.Size = new System.Drawing.Size(1031, 650);
             this.chart.TabIndex = 44;
             this.chart.Text = "chart1";
@@ -219,6 +219,7 @@
             // 
             // timerT
             // 
+            this.timerT.Interval = 1;
             this.timerT.Tick += new System.EventHandler(this.timerT_Tick);
             // 
             // btnAbout
@@ -238,7 +239,7 @@
             this.propertyGrid1.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
             this.propertyGrid1.Size = new System.Drawing.Size(171, 369);
             this.propertyGrid1.TabIndex = 85;
-            this.propertyGrid1.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGrid1_SelectedGridItemChanged);
+            this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
             // tabControl1
             // 
@@ -279,7 +280,7 @@
             this.propertyGrid2.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
             this.propertyGrid2.Size = new System.Drawing.Size(171, 369);
             this.propertyGrid2.TabIndex = 86;
-            this.propertyGrid2.SelectedGridItemChanged += new System.Windows.Forms.SelectedGridItemChangedEventHandler(this.propertyGrid2_SelectedGridItemChanged);
+            this.propertyGrid2.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid_PropertyValueChanged);
             // 
             // WindowPDE
             // 

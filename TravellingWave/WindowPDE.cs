@@ -1,10 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TravellingWave
@@ -44,12 +39,7 @@ namespace TravellingWave
                 chart.Series[numEq].Points.AddXY(obj.getX(i), obj.getU(j, i));
         }
 
-        private void propertyGrid1_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
-        {
-            btnSolveBeh();
-        }
-
-        private void propertyGrid2_SelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        private void propertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             btnSolveBeh();
         }
@@ -156,8 +146,19 @@ namespace TravellingWave
 
         private void btnTune_Click(object sender, EventArgs e)
         {
-            chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
-            chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
+            try
+            {
+                chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
+                chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(
+                    "Введено недопустимое значение (в качестве разделителя используйте запятую)",
+                    "Недопустимое значение",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+            }
         }
 
         private void btnStopTimer_Click(object sender, EventArgs e)
@@ -177,8 +178,8 @@ namespace TravellingWave
 
         private void setPlot()
         {
-            chart.ChartAreas[0].AxisX.Minimum = -Convert.ToDouble(pdes[0].L) - 0.1;
-            chart.ChartAreas[0].AxisX.Maximum = Convert.ToDouble(pdes[0].L) + 0.1;
+            chart.ChartAreas[0].AxisX.Minimum = -Convert.ToDouble(pdes[0].L);
+            chart.ChartAreas[0].AxisX.Maximum = Convert.ToDouble(pdes[0].L);
 
             chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(txtBoxMaxUV.Text);
             chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(txtBoxMinUV.Text);

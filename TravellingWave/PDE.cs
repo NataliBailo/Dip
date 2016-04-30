@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 
 namespace TravellingWave
@@ -12,7 +9,7 @@ namespace TravellingWave
         private double[] x, t;
         private double hx, ht; // шаги по x и по t
         private double[,] u;
-        
+
         // свойства (properties)
         [Description("Количество точек по x")]
         public int N
@@ -87,10 +84,10 @@ namespace TravellingWave
         // Конструктор
         public PDE()
         {
-            N = 2000;
-            M = 2000;
+            N = 1000;
+            M = 1000;
             L = 50.0;
-            T = 40.0;
+            T = 200.0;
 
             b = 1.0;
             d = 1.0;
@@ -108,11 +105,11 @@ namespace TravellingWave
             ht = T / M;  // шаг по t
 
             x = new double[N + 1];
-            for (int i = 0; i < N + 1; i++) 
-                x[i] = - L + i * hx;
+            for (int i = 0; i < N + 1; i++)
+                x[i] = -L + i * hx;
 
             t = new double[M + 1];
-            for (int j = 0; j < M + 1; j++) 
+            for (int j = 0; j < M + 1; j++)
                 t[j] = j * ht;
 
             u = new double[M + 1, N + 1];
@@ -126,7 +123,7 @@ namespace TravellingWave
         }
 
         public int solve()
-        {   
+        {
             double step = ht / (hx * hx);
 
             double[] P = new double[N + 1];
@@ -139,7 +136,7 @@ namespace TravellingWave
             di[0] = 0; di[N] = 0; // если меняем условие Неймана (что-то вместо du/dn = 0), то эту строчку нужно закомментировать
 
             P[0] = ci[0] / bi[0];
-            for (int i = 1; i < N; i++) 
+            for (int i = 1; i < N; i++)
                 P[i] = ci[1] / (bi[1] - ai[1] * P[i - 1]);
             P[N] = ci[2] / (bi[2] - ai[2] * P[N - 1]);
 
@@ -174,7 +171,7 @@ namespace TravellingWave
             Q[N] = (ai[2] * Q[N - 1] - di[N]) / (bi[2] - ai[2] * P[N - 1]);
 
             u[j + 1, N] = Q[N];
-            for (int i = N - 1; i > -1; i--) 
+            for (int i = N - 1; i > -1; i--)
                 u[j + 1, i] = P[i] * u[j + 1, i + 1] + Q[i];
 
             return 0;
@@ -182,51 +179,47 @@ namespace TravellingWave
 
         private void calculateDCoeff(double[] di, int i, int j, int k)
         {
-            if (DeltaCoupling)
+            if (b == 0)
+                di[i] = u[j, i] + ht * f(u[j, i]);
+            else
             {
-                if (b != 0)
+                if (DeltaCoupling)
                 {
-                    if (i - k <= 1) // если x - d <= -l
-                    {
-                        if (i + k <= N - 1) // если x - d <= -l И x + d <= l
-                            di[i] = u[j, i] + ht * (b * (0.5 * (u[j, 1] + u[j, i + k]) - u[j, i]) + f(u[j, i]));
-                        else if (i + k > N - 1) // если x - d <= -l И x + d > l
-                            di[i] = u[j, i] + ht * (b * (0.5 * (u[j, 1] + u[j, N - 1]) - u[j, i]) + f(u[j, i]));
-                    }
-                    else if (i - k > 1) // если x - d > -l
-                    {
-                        if (i + k <= N - 1) // если x - d > -l И x + d <= l
-                            di[i] = u[j, i] + ht * (b * (0.5 * (u[j, i - k] + u[j, i + k]) - u[j, i]) + f(u[j, i]));
-                        else if (i + k > N - 1)  // если x - d > -l И x + d > l
-                            di[i] = u[j, i] + ht * (b * (0.5 * (u[j, i - k] + u[j, N - 1]) - u[j, i]) + f(u[j, i]));
-                    }
+                    double uxminusd = 0, uxplusd = 0;
+                    if (i - k <= 0) // if x - d <= -L
+                        uxminusd = u[j, 0];
+                    else // if x - d > -L
+                        uxminusd = u[j, i - k];
+
+                    if (i + k >= N) // x + d >= L
+                        uxplusd = u[j, N];
+                    else // if x + d < L
+                        uxplusd = u[j, i + k];
+
+                    di[i] = u[j, i] + ht * (0.5 * b * (uxminusd + uxplusd - 2 * u[j, i]) + f(u[j, i]));
                 }
                 else
-                    di[i] = u[j, i] + ht * (f(u[j, i]));
+                    di[i] = u[j, i] + ht * (b * (integral(j, i) - u[j, i]) + f(u[j, i]));
             }
-            else if (b != 0)
-                di[i] = u[j, i] + ht * (b * (integral(j, i) - u[j, i]) + f(u[j, i]));
-            else
-                di[i] = u[j, i] + ht * (f(u[j, i]));
         }
 
         public double getX(int i)
-        { 
-            return x[i]; 
+        {
+            return x[i];
         }
 
         public double getT(int j)
         {
             return t[j];
         }
-        
+
         public double getU(int j, int i)
-        { 
-            return u[j, i]; 
+        {
+            return u[j, i];
         }
 
         // разные функции
-		private double f(double u)
+        private double f(double u)
         {
             if (Classical)
                 return u - u * u * u / 3;
@@ -249,7 +242,7 @@ namespace TravellingWave
         {
             //return Math.Exp(-z * z / 2) / Math.Sqrt(2 * Math.PI);
             return 0.5 * Math.Exp(-Math.Abs(z + 2));
-        }            
+        }
 
         private double u_x_0(double x)
         {	// начальное условие при t = 0
